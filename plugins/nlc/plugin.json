@@ -1,0 +1,8 @@
+{
+  "shortName": "nlctool",
+  "name": "Natural Language Classifier Tool",
+  "description": "Create a new project for NLC",
+  "icon": "http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/images/service-icons/NaturalLanguageClassifier.svg",
+  "projectView": "plugins/nlc/nlcProjectView",
+  "config": "plugins/nlc/nlcConfigView"
+}

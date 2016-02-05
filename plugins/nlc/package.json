@@ -1,0 +1,15 @@
+{
+  "name": "ignite-plugin-nlctool",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "nlcConfigModel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Madison <cmadison@us.ibm.com> (http://developer.ibm.com/bluemix/author/cmadison)",
+  "license": "MIT",
+  "dependencies": {
+    "csv-parse": "^1.0.1",
+    "csv-stringify": "0.0.8"
+  }
+}

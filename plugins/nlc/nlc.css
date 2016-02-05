@@ -1,0 +1,24 @@
+.panel-heading h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 55%;
+    padding-top: 8px;
+}
+
+textarea {
+    resize:none;
+}
+
+.train-table-item {
+    width: 50px;
+}
+
+.train-table-text {
+    width: 65%;
+}
+
+.train-table-class{
+
+}

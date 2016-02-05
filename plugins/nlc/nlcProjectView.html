@@ -1,0 +1,195 @@
+<link rel="stylesheet" href="../../plugins/nlc/nlc.css">
+<div id="plugins/nlc/nlcProjectView" data-vm="plugins/nlc/nlcProjectModel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#config" aria-controls="home" role="tab" data-toggle="tab">Configuration</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Training</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Testing</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Metrics</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <!-- configuration pane -->
+    <div role="tabpanel" class="tab-pane active" id="config">
+      <div class="panel-group">
+        <div class="panel panel-primary">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">Project Details</h4>
+          </div>
+          <div class="panel-body">
+            <div class="col-xs-6">
+              <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd id="projectName"></dd>
+                <dt>Bluemix ID</dt>
+                <dd id="bluemixID"></dd>
+                <dt>Bluemix EndPoint</dt>
+                <dd id="bluemixEndPoint"></dd>
+                <dt>Bluemix Org</dt>
+                <dd id="bluemixOrg"></dd>
+                <dt>Bluemix Space</dt>
+                <dd id="bluemixSpace"></dd>
+              </dl>
+            </div>
+            <div class="col-xs-6">
+              <dl class="dl-horizontal">
+                <dt>NLC Service</dt>
+                <dd id="nlcServiceName"></dd>
+                <dt>NLC Service Key</dt>
+                <dd id="nlcServiceKeyName"></dd>
+                <dt>NLC Service Plan</dt>
+                <dd id="nlcServicePlanName"></dd>
+              </dl>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="panel-group">
+        <div class="panel panel-primary">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">Classifiers</h4>
+          </div>
+          <div class="panel" role="tabpanel">
+            <div class="panel-body">
+              Hello!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Training Tab -->
+    <div role="tabpanel" class="tab-pane" id="profile">
+      <div role="tabpanel" class="tab-pane active" id="config">
+        <div class="panel-group">
+          <div class="panel panel-primary">
+            <div class="panel-heading clearfix" role="tab">
+              <h4 class="panel-title pull-left">Training Data</h4>
+              <div class="btn-toolbar pull-right" role="toolbar" aria-label="training-data-bar">
+                <!-- <div class="btn-group">
+                  <button type="button" id="createClassifier" class="btn btn-default btn-sm" aria-label="Create Classifier" data-toggle="tooltip" data-placement="top" title="Create Classifier">
+                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+                  </button>
+                </div> -->
+                <div class="btn-group">
+                  <button type="button" id="saveButton" class="btn btn-default btn-sm" aria-label="Save Workspace" data-toggle="tooltip" data-placement="top" title="Save Workspace">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                  </button>
+                  <button type="button" id="versionButton" class="btn btn-default btn-sm" aria-label="Version Workspace" data-toggle="tooltip" data-placement="top" title="Version Workspace">
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="btn-group">
+                  <button type="button" id="loadVersionButton" class="btn btn-default btn-sm" aria-label="Load Version" data-toggle="tooltip" data-placement="top" title="Load Version">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="btn-group">
+                  <span data-toggle="modal" data-target="#trainingModal">
+                    <button type="button" id="addRowButton" class="btn btn-default btn-sm" aria-label="Add Row" data-toggle="tooltip" data-placement="top" title="Add Row">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                  <button type="button" id="importCSVButton" class="btn btn-default btn-sm" aria-label="Import CSV" data-toggle="tooltip" data-placement="top" title="Import CSV">
+                    <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+                  </button>
+                  <button type="button" id="exportCSVButton" class="btn btn-default btn-sm" aria-label="Export CSV" data-toggle="tooltip" data-placement="top" title="Export CSV">
+                    <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body" style="min-height:450px;max-height:450px;overflow-y:scroll;">
+
+              <table id="trainingTable" class="table table-bordered table-striped table-hover table-condensed">
+                <tr>
+                  <th class="train-table-item">
+                    Item
+                  </th>
+                  <th class="train-table-text">
+                    Text
+                  </th>
+                  <th>
+                    Classification
+                  </th>
+                </tr>
+                <tr id="empty-row">
+                  <td colspan="3" class="text-center">
+                    <b>There is no training data to display.</b>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="panel-footer">
+              <div class="row">
+                <div class="col-xs-6" >
+                  <label>Loaded Version: </label>
+                  <label id="versionLoadedIndicator">N/A</label>
+                </div>
+                <div class="col-xs-6 pull-right">
+                  <label>Workspace Saved: </label>
+                  <label id="workspaceSavedIndicator">N/A</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-group" style="height:20%">
+          <div class="panel panel-primary">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">Warning Data</h4>
+            </div>
+            <div class="panel-body">
+              <table id="warning" class="table table-bordered table-striped"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div role="tabpanel" class="tab-pane" id="messages">Testing</div>
+    <div role="tabpanel" class="tab-pane" id="settings">Metrics</div>
+  </div>
+
+  <div id="trainingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="trainingDataModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="trainingDataModalLabel">Text Classification Entry</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form class="form-horizontal" id="trainingForm">
+              <div class="form-group">
+                <label for="textToClassify" class="col-xs-3 control-label">Enter Text</label>
+                <div class="col-xs-8">
+                  <textarea class="form-control" id="textToClassify" rows="5" placeholder="Enter Text" required></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="trainingLabels" class="col-xs-3 control-label">Enter Classes</label>
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" id="trainingLabels" name="trainingLables" placeholder="Enter one or more comma separated classes" required></input>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="trainingSubmitButton">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
