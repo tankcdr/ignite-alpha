@@ -72,6 +72,11 @@
     }
 
     return {
+      ensureIndex: (projectID, dbID, options) => {
+        getProjectDB(projectID, dbID, (err, db)=> {
+          db.ensureIndex(options, function (err) {console.log(err)});
+        })
+      },
       createProject: (project, directories, cb) => {
         createDB(project, (err, updatedProject) => {
           if (err) {

@@ -9,6 +9,8 @@
   const stringify = require('csv-stringify');
   const $ = window.$
   const project = require('../../../js/project')
+  const WORKSPACE = 0
+  const WORKSPACE_STRING = 'Workspace'
 
   const addTableRow = (tableID, text, labels) => {
     let table = document.getElementById(tableID)
@@ -30,10 +32,15 @@
             record[0].data[i].text,
             record[0].data[i].labels)
         }
-        $('#workspaceSavedIndicator').text('Yes')
-        $('#versionLoadedIndicator').text('Workspace')
+        displayCurrentState(version, 'Yes')
       }
     })
+  }
+
+  const displayCurrentState = (version, state) => {
+    let vstring = (version===WORKSPACE) ? WORKSPACE_STRING : version
+    $('#workspaceSavedIndicator').text(state)
+    $('#versionLoadedIndicator').text(vstring)
   }
 
 
@@ -48,6 +55,38 @@
     $('#trainingModal').on('hide.bs.modal', () => {
       $('#textToClassify').val('')
       $('#trainingLabels').val('')
+    })
+
+    $('#loadVersionModal').on('show.bs.modal', () => {
+      //load the available versions
+      project.selectAndSortFromProjectDB(self.projectID, "training", {
+        version: -1
+      }, (err, records) => {
+        records.forEach((entry) => {
+          if(entry.version != WORKSPACE) {
+            $('#versionList').append($("<option></option>")
+                             .attr("value",entry._id)
+                             .text(entry.version));
+
+            $('#versionList').focus()
+          }
+        })
+      })
+    })
+
+    $('#loadVersionModal').on('hide.bs.modal', () => {
+      //empty list when modal is closed
+      $('#versionList').empty()
+    })
+
+    /*************************************************************
+     * Load version into table
+     *************************************************************/
+    $('#selectVersionButton').click(() => {
+      $('#trainingTable').find('tr:gt(0)').remove()
+      loadVersionIntoTable(self.projectID, "training", parseInt($('#versionList option:selected').text()))
+      $('#versionList').empty()
+      $('#loadVersionModal').modal('toggle')
     })
 
     /*************************************************************
@@ -80,7 +119,7 @@
 
         $('#trainingModal').modal('toggle')
       }
-      $('#workspaceSavedIndicator').text('No')
+      displayCurrentState(WORKPLACE, 'No')
     })
 
     /*************************************************************
@@ -106,7 +145,7 @@
               }
             })
             fs.createReadStream(file).pipe(parser);
-            $('#workspaceSavedIndicator').text('No')
+            displayCurrentState(WORKSPACE,'No')
           })
         }
       })
@@ -151,12 +190,12 @@
        *************************************************************/
     $('#saveButton').click(() => {
       project.fetchFromProjectDB(self.projectID, "training", {
-        version: "workspace"
+        version: WORKSPACE
       }, (err, records) => {
         let record = null
         if (!records || records.length <= 0) {
           record = {
-            version: "workspace",
+            version: WORKSPACE,
             data: []
           }
         } else {
@@ -174,7 +213,7 @@
         }
 
         let filter = {
-          version: "workspace"
+          version: WORKSPACE
         }
         if (record._id) {
           filter = {
@@ -186,8 +225,7 @@
           if (err) {
             dialog.showErrorBox("Error Saving Workspace", err.message)
           } else {
-            $('#workspaceSavedIndicator').text('Yes')
-            $('#versionLoadedIndicator').text('Workspace')
+            displayCurrentState(WORKPLACE,'Yes')
           }
         })
       })
@@ -200,13 +238,10 @@
       project.selectAndSortFromProjectDB(self.projectID, "training", {
         version: -1
       }, (err, records) => {
-        let record = records[1] || records[0]
 
-        if (record.version === 'workspace') {
-          record.version = 1
-        } else {
-            ++record.version
-        }
+        let record = records[0]
+        ++record.version
+
         record.data.length = 0;
         delete record._id
 
@@ -223,8 +258,7 @@
           if (err) {
             dialog.showErrorBox("Error Saving Workspace", err.message)
           } else {
-            $('#workspaceSavedIndicator').text('Yes')
-            $('#versionLoadedIndicator').text(record.version)
+            displayCurrentState(record.version, 'Yes')
           }
         })
       })
@@ -233,6 +267,10 @@
     /*************************************************************
      * Load the workspace into the training table
      *************************************************************/
-    loadVersionIntoTable(self.projectID, "training", "workspace")
+     project.ensureIndex(self.projectID, "training", {
+       fieldName: 'version',
+       unique:true
+     })
+    loadVersionIntoTable(self.projectID, "training", WORKSPACE)
   }
 })()
